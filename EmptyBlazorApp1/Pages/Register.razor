@@ -5,7 +5,7 @@
 @inject DatabaseContext DatabaseContext
 @inject NavigationManager NavigationManager
 
-<div class="grid grid-cols-1 mx-5 lg:w-[300px] m-auto gap-y-8 lg:my-52">
+<div class="grid grid-cols-1 md:w-[600px] w-[300px] m-auto gap-y-8 lg:my-52 my-52">
     <div class="flex flex-col justify-center">
         <label>Username</label>
         <input
@@ -32,8 +32,10 @@
     </div>
 
 
-    <Button OnSave="@Go" Text="Registrarse"/>
-    
+    <div class="flex flex-col justify-center">
+        <Button OnSave="@Go" Text="Registrarse"/>
+    </div>
+
     @if (!string.IsNullOrEmpty(MessageError))
     {
         <div class="text-red-500 text-center">

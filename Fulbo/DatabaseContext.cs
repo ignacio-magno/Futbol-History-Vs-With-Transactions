@@ -29,6 +29,6 @@ public class DatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseLazyLoadingProxies().UseSqlServer(
-            "Server=192.168.1.142;Database=Fulbo;User Id=sa; Password=Admin1234;TrustServerCertificate=True;");
+            "Server=192.168.1.99;Database=Fulbo;User Id=sa; Password=admin007;TrustServerCertificate=True;");
     }
 }
