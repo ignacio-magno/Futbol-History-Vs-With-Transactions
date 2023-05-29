@@ -1,0 +1,42 @@
+@using Fulbo.Dto
+
+<h3>Index</h3>
+
+<RadzenDataGrid Data="@partidos">
+    <Columns>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="Fecha" Title="Fecha" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorLocal.NickName" Title="Local" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorLocal.EquipoSeleccionado" Title="Equipo" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorVisitante.NickName" Title="Visitante" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorVisitante.EquipoSeleccionado" Title="Equipo" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+
+        <RadzenDataGridColumn TItem="PartidoDto" Property="Ganador" Title="Ganador" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+
+        <RadzenDataGridColumn TItem="PartidoDto" Title="Action" Width="80px">
+            <Template Context="partido">
+                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Size="ButtonSize.Small" Click="@(() => SendPartido(partido))"/>
+            </Template>
+        </RadzenDataGridColumn>
+
+    </Columns>
+
+</RadzenDataGrid>
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    [Parameter]
+    public IEnumerable<PartidoDto> partidos { get; set; } = new List<PartidoDto>();
+
+    // callback to parent set partidoDto
+    [Parameter]
+    public EventCallback<PartidoDto> OnPartidoSelected { get; set; }
+
+    private Task SendPartido(PartidoDto partido)
+    {
+        return OnPartidoSelected.InvokeAsync(partido);
+    }
+}

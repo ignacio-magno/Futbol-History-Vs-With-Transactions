@@ -1,0 +1,70 @@
+@page "/partidos/add"
+@using Fulbo.Domain
+@using EmptyBlazorApp1.Domain
+@using Fulbo
+@using Fulbo.Dependencies
+@using Fulbo.Dto
+@using Fulbo.Presenter
+@inject DatabaseContext DatabaseContext
+
+
+<h3>add</h3>
+
+<PartidoInitForm OnDatoEnviado="@RecibirPartido" Equipos="@equipos"></PartidoInitForm>
+
+@if (partido != null)
+{
+    <GolForm OnDatoEnviado="@RecibirDato" Partido="@partido"/>
+
+    <GolesTable Partido="@partido"></GolesTable>
+    <button class="bg-gray-500 text-white px-5 py-2 rounded-sm" @onclick="@Save">Guardar</button>
+}
+
+
+
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    private IEnumerable<UserDto>? users { get; set; }
+    public Partido? partido { get; set; }
+    private IEnumerable<EquipoDto>? equipos { get; set; }
+
+
+    protected override Task OnInitializedAsync()
+    {
+        equipos = new EquipoPresenter(DatabaseContext).GetAll();
+
+        return base.OnInitializedAsync();
+    }
+
+    private Task RecibirDato(DataGol dato)
+    {
+        if (partido != null)
+        {
+            partido.SetGol(dato.TipoJugador, dato.IdFutbolista, dato.Minuto, new DataFutbol(DatabaseContext));
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private Task RecibirPartido(Partido partido)
+    {
+        this.partido = partido;
+        return Task.CompletedTask;
+    }
+
+
+
+    private void Save()
+    {
+        if (partido != null)
+        {
+            var presenter = new PartidoPresenter(DatabaseContext);
+            presenter.AddPartido(session.Id, partido);
+        }
+    }
+
+}

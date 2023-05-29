@@ -1,0 +1,62 @@
+@using Fulbo.Dto
+@using Fulbo.Presenter
+@using Fulbo
+@using Fulbo.Domain
+@using Fulbo.Domain.Jugadores
+@inject DatabaseContext DatabaseContext
+
+<div class="grid grid-cols-1 gap-y-5 m-auto">
+    <h3>PartidoInitForm</h3>
+
+    <div class="flex justify-between">
+        <label>Selecciona el rival</label>
+        <RadzenDropDown Data="@users" TextProperty="NickName" ValueProperty="Id" @bind-Value="selectedSession"/>
+    </div>
+
+    <div class="flex justify-between">
+        <label>Selecciona tú equipo</label>
+        <RadzenDropDown Data="@Equipos" TextProperty="Nombre" ValueProperty="Id" @bind-Value="idEquipoLocal"/>
+    </div>
+
+    <div class="flex justify-between">
+        <label>Selecciona el rival</label>
+        <RadzenDropDown Data="@Equipos" TextProperty="Nombre" ValueProperty="Id" @bind-Value="idEquipoVisitante"/>
+    </div>
+
+    <button class="bg-gray-500 text-white px-5 py-2 rounded-sm" @onclick="() => CreatePartido()">Crear</button>
+
+</div>
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    private int selectedSession { get; set; }
+
+    private IEnumerable<UserDto>? users { get; set; }
+
+    public int idEquipoLocal { get; set; }
+    public int idEquipoVisitante { get; set; }
+
+    [Parameter]
+    public EventCallback<Partido> OnDatoEnviado { get; set; }
+
+    [Parameter]
+    public IEnumerable<EquipoDto> Equipos { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var userPresenter = new UserPresenter(DatabaseContext);
+        users = userPresenter.GetAll();
+    }
+
+
+    private Task CreatePartido()
+    {
+        var partido = new Partido(new JugadorLocal(session.Id, idEquipoLocal), new JugadorVisitante(selectedSession, idEquipoVisitante));
+
+        return OnDatoEnviado.InvokeAsync(partido);
+    }
+
+}

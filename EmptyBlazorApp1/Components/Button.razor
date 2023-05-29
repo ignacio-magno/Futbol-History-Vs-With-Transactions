@@ -1,0 +1,11 @@
+<button class="bg-gray-500 text-white px-5 py-2 rounded-sm" @onclick="@OnSave">@Text</button>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+}

@@ -1,0 +1,110 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Fulbo.Presenter
+@using Fulbo
+@using Fulbo.Dto
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject DatabaseContext DatabaseContext
+@inject NavigationManager NavigationManager
+
+<main class="w-[1200px] m-auto my-5">
+    @if (session == null && pathname != "register")
+    {
+        <div class="grid grid-cols-1 w-[300px] m-auto gap-y-8 my-52">
+            <div class="flex flex-col justify-center">
+                <label>Username</label>
+                <br/>
+                <input
+                    class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    placeholder="Ingresa tu texto" @bind="@userName"/>
+            </div>
+
+            <div class="flex flex-col justify-center">
+                <label>Password</label>
+                <br/>
+                <input
+                    class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                    placeholder="**************"
+                    type="password"
+                    @bind="@password"/>
+            </div>
+
+            <Button OnSave="@Go" Text="Loguead"/>
+
+            <button class="text-lg font-bold text-blue-500" @onclick="@Register">Registrarse</button>
+        </div>
+    }
+    else
+    {
+        @if (session != null)
+        {
+            <CascadingValue Value="@session">
+                <div class="flex gap-x-5 justify-end items-center">
+                    <button class="text-lg font-bold text-blue-500" @onclick="@(() => NavigationManager.NavigateTo("/"))">Home</button>
+                    <p> Bienveido @session.NickName </p>
+                    <Button OnSave="@CloseSession" Text="Cerrar sesión"></Button>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                @Body
+            </CascadingValue>
+        }
+        else
+        {
+            @Body
+        }
+    }
+</main>
+
+@code{
+
+    private UserDto? session;
+    private string userName { get; set; }
+    private string password { get; set; }
+    private string pathname { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var result = await ProtectedSessionStore.GetAsync<int>("idUser");
+            if (result.Success)
+            {
+                var presenter = new SessionPresenter(DatabaseContext);
+                session = presenter.Find(result.Value);
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        pathname = NavigationManager.Uri.Split("/")[3];
+        Console.WriteLine(NavigationManager.Uri);
+        Console.WriteLine(pathname);
+    }
+
+    private void Go()
+    {
+        var presenter = new SessionPresenter(DatabaseContext);
+        session = presenter.Login(userName, password);
+        if (session != null)
+        {
+            ProtectedSessionStore.SetAsync("idUser", session.Id);
+        }
+    }
+
+
+    private void CloseSession()
+    {
+        ProtectedSessionStore.DeleteAsync("idUser");
+        session = null;
+    }
+
+    private void Register()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
+}

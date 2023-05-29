@@ -1,0 +1,22 @@
+@page "/partidos"
+@using Fulbo.Dto
+@using Fulbo
+@using Fulbo.Presenter
+@inject DatabaseContext DatabaseContext
+
+<PartidosComponent partidos="@partidos"></PartidosComponent>
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    private IEnumerable<PartidoDto> partidos { get; set; } = new List<PartidoDto>();
+
+    protected override void OnInitialized()
+    {
+        var presenter = new PartidoPresenter(DatabaseContext);
+        partidos = presenter.GetPartidos(session.Id);
+    }
+
+}

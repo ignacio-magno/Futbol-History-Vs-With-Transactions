@@ -1,0 +1,29 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@using Fulbo.Dto
+
+<Button OnSave="GoToAddPartido" Text="Añadir partido"></Button>
+<Button OnSave="GoToViewPartidos" Text="Ver Partidos"></Button>
+<Button OnSave="GoToPendientesPartidos" Text="Partidos Pendientes"></Button>
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    private void GoToAddPartido()
+    {
+        NavigationManager.NavigateTo("/partidos/add");
+    }
+
+    private void GoToViewPartidos()
+    {
+        NavigationManager.NavigateTo("/partidos");
+    }
+
+    private void GoToPendientesPartidos()
+    {
+        NavigationManager.NavigateTo("/partidos/pendientes");
+    }
+
+}

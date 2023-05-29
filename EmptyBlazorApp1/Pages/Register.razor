@@ -1,0 +1,65 @@
+@page "/register"
+@using Fulbo.Presenter
+@using Fulbo
+@using Fulbo.Dto
+@inject DatabaseContext DatabaseContext
+@inject NavigationManager NavigationManager
+
+<div class="grid grid-cols-1 w-[300px] m-auto gap-y-8 my-52">
+    <div class="flex flex-col justify-center">
+        <label>Username</label>
+        <input
+            class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+            placeholder="Ingresa tu texto" @bind="@userName"/>
+    </div>
+
+    <div class="flex flex-col justify-center">
+        <label>Password</label>
+        <input
+            class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+            placeholder="**************"
+            type="password"
+            @bind="@password"/>
+    </div>
+
+    <div class="flex flex-col justify-center">
+        <label>Repeat password</label>
+        <input
+            class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+            placeholder="**************"
+            type="password"
+            @bind="@repeatPassword"/>
+    </div>
+
+
+    <Button OnSave="@Go" Text="Registrarse"/>
+    
+    @if (!string.IsNullOrEmpty(MessageError))
+    {
+        <div class="text-red-500 text-center">
+            @MessageError
+        </div>
+    }
+</div>
+
+
+@code {
+
+    private string userName { get; set; }
+    private string password { get; set; }
+    private string repeatPassword { get; set; }
+    private string MessageError { get; set; }
+
+    private void Go()
+    {
+        if (password != repeatPassword)
+        {
+            MessageError = "Las contraseñas no coinciden";
+            return;
+        }
+        var presenter = new SessionPresenter(DatabaseContext);
+        presenter.Register(new UserDto(userName), new CredentialsDto(password));
+        NavigationManager.NavigateTo("/");
+    }
+
+}

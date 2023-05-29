@@ -1,0 +1,77 @@
+@using Fulbo.Domain
+@using EmptyBlazorApp1.Domain
+@using System.Collections
+@using Fulbo
+@using Fulbo.Dto
+@inject DatabaseContext DatabaseContext
+
+<div class="grid grid-cols-1 gap-y-5 m-auto">
+    <div class="mt-10">
+        <RadzenRadioButtonList @bind-Value=@estadoEquipo TValue="int" class="mb-5">
+            <Items>
+                <RadzenRadioButtonListItem Text="Local" Value="@TipoJugador.Local.EstadoEquipoToInt()"/>
+                <RadzenRadioButtonListItem Text="Visitante" Value="@TipoJugador.Visitante.EstadoEquipoToInt()"/>
+            </Items>
+        </RadzenRadioButtonList>
+    </div>
+    @if (estadoEquipo != 0)
+    {
+        <div class="flex justify-between">
+            <label>Selecciona el jugador</label>
+            <RadzenDropDown Data="@GetJugadores()" TextProperty="NombreCompleto" ValueProperty="Id" @bind-Value="@selectedJugador"/>
+        </div>
+
+        <div class="flex justify-between">
+            <label>Minutos</label>
+            <RadzenNumeric @bind-Value="@minute"/>
+        </div>
+
+        <button class="bg-gray-500 text-white px-5 py-2 rounded-sm" @onclick="@Go">Agregar Partido</button>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback<DataGol> OnDatoEnviado { get; set; }
+
+    [Parameter]
+    public Partido Partido { get; set; }
+
+    public int estadoEquipo { get; set; }
+
+    public int minute { get; set; }
+
+    public int selectedJugador { get; set; }
+
+    public TipoJugador? LOV => Enum.TryParse(estadoEquipo.ToString(), out TipoJugador lov) ? lov : null;
+
+
+    public void Go()
+    {
+        if (LOV != null)
+        {
+            var dataGol = new DataGol()
+            {
+                TipoJugador = LOV.Value,
+                Minuto = minute,
+                IdFutbolista = selectedJugador,
+            };
+
+            OnDatoEnviado.InvokeAsync(dataGol);
+        }
+    }
+
+    private IEnumerable<FutbolistaDto>? GetJugadores()
+    {
+        if (LOV != null)
+        {
+            var equipo = Partido.GetJugador(LOV.Value).EquipoId;
+            return DatabaseContext.Equipos.Find(equipo).Futbolistas.Select(j => new FutbolistaDto(j));
+        }
+
+        return null;
+    }
+
+}

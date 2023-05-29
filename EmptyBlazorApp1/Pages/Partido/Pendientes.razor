@@ -1,0 +1,44 @@
+@page "/partidos/pendientes"
+@using Fulbo.Dto
+@using Fulbo
+@using Fulbo.Domain
+@using Fulbo.Presenter
+@inject DatabaseContext DatabaseContext
+
+<h3>Index</h3>
+
+<PartidosComponent partidos="@partidos" OnPartidoSelected="@ReceiveSelected"></PartidosComponent>
+@if (SelectedPartido != null)
+{
+    <GolesTable partido="@SelectedPartido"></GolesTable>
+    
+    <button class="bg-gray-500 text-white px-5 py-2 rounded-sm" @onclick="@Sign">Firmar</button>
+}
+
+@code {
+
+    [CascadingParameter]
+    private UserDto session { get; set; }
+
+    private IEnumerable<PartidoDto> partidos { get; set; } = new List<PartidoDto>();
+
+    public Partido SelectedPartido { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var presenter = new PartidoPresenter(DatabaseContext);
+        partidos = presenter.GetPartidosPendientes(session.Id);
+    }
+
+    private void ReceiveSelected(PartidoDto partido)
+    {
+        SelectedPartido = DatabaseContext.Partidos.Find(partido.Id);
+    }
+
+    private void Sign()
+    {
+        var presenter = new PartidoPresenter(DatabaseContext);
+        presenter.SignPartido(SelectedPartido.Id,session.Id);
+    }
+
+}
