@@ -38,4 +38,24 @@ public class PartidoTest
         action = () => partido.SetGol(TipoJugador.Local, 1, 20, mock.Object);
         action.Should().NotThrow<Exception>();
     }
+
+    [Test]
+    public void PartidoNotCanHaveSameUser()
+    {
+        var jl = new JugadorLocal(1, 1);
+        var jv = new JugadorVisitante(1, 2);
+
+        var action = () => new Partido(jl, jv);
+        action.Should().Throw<Exception>();
+    }
+    
+    [Test]
+public void PartidoNotCanHaveSameTeam()
+    {
+        var jl = new JugadorLocal(1, 1);
+        var jv = new JugadorVisitante(2, 1);
+
+        var action = () => new Partido(jl, jv);
+        action.Should().Throw<Exception>();
+    }
 }

@@ -1,9 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4d25ce6d_002D8dd3_002D4920_002D9dd6_002Df1bd0c62aefe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\laste\RiderProjects\Fulbo\TestProject1" Presentation="&amp;lt;TestProject1&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4d25ce6d_002D8dd3_002D4920_002D9dd6_002Df1bd0c62aefe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::0DBA0BE1-3095-471B-8E2A-0294455A59B3::net7.0::TestProject1.Unit.PartidoTest.PartidoNotCanHaveSameTeam&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::0DBA0BE1-3095-471B-8E2A-0294455A59B3::net7.0::TestProject1.Integration.PartidoPresenterTest.METHOD2&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=861b7c3c_002D50a6_002D4fe8_002D99fd_002D778a8260bbe6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::0DBA0BE1-3095-471B-8E2A-0294455A59B3::net7.0::TestProject1.Integration.Seed.SeedFutbol&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=861b7c3c_002D50a6_002D4fe8_002D99fd_002D778a8260bbe6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::0DBA0BE1-3095-471B-8E2A-0294455A59B3::net7.0::TestProject1.Integration.Seed.SeedFutbol&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

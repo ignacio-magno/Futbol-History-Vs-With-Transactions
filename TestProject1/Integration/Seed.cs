@@ -3,6 +3,7 @@ using Fulbo.Domain;
 
 namespace TestProject1.Integration;
 
+[Ignore("Solo para ejecutar manualmente")]
 public class Seed
 {
     [Test]

@@ -4,6 +4,7 @@ using Fulbo.Dependencies;
 using Fulbo.Domain;
 using Fulbo.Domain.Jugadores;
 using Fulbo.Presenter;
+using Newtonsoft.Json;
 using TestProject1.Provider;
 
 namespace TestProject1.Integration;
@@ -42,5 +43,17 @@ public class PartidoPresenterTest
             partidos.First().Goles.Count().Should().Be(5);
             partidos.First().GetGanador().UserId.Should().Be(user2.Id);
         }
+    }
+
+    [Test]
+    public void METHOD2()
+    {
+        var partido = new DatabaseContext().Partidos.Find(4);
+        var js  = JsonConvert.SerializeObject(partido, Formatting.Indented,  new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        });
+        Console.WriteLine(js);
+
     }
 }

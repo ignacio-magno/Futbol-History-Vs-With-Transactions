@@ -13,6 +13,10 @@ public class Partido
 
     public Partido(JugadorLocal jugadorLocal, JugadorVisitante jugadorVisitante)
     {
+        if (jugadorLocal.EquipoId == jugadorVisitante.EquipoId)
+            throw new Exception("El partido no puede ser entre el mismo equipo");
+        if (jugadorLocal.UserId == jugadorVisitante.UserId)
+            throw new Exception("El partido no puede ser entre el mismo jugador");
         JugadorLocal = jugadorLocal;
         JugadorVisitante = jugadorVisitante;
     }

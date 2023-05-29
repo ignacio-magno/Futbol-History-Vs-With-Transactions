@@ -1,14 +1,30 @@
 @using Fulbo.Dto
+@using Fulbo.Domain
 
 <h3>Index</h3>
+
+<style>
+    .winner {
+        background-color: #00ff00;
+        color: #ff0000;
+    }
+</style>
 
 <RadzenDataGrid Data="@partidos">
     <Columns>
         <RadzenDataGridColumn TItem="PartidoDto" Property="Fecha" Title="Fecha" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
-        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorLocal.NickName" Title="Local" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorLocal.NickName" Title="Local" Frozen="true" Width="80px" TextAlign="TextAlign.Center" CssClass="winner">
+            <Template Context="data">
+                <span style=@(data.Ganador == TipoJugador.Local ? "color: green" : "color: red")>@data.JugadorLocal.NickName</span>
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorLocal.EquipoSeleccionado" Title="Equipo" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
 
-        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorVisitante.NickName" Title="Visitante" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorVisitante.NickName" Title="Visitante" Frozen="true" Width="80px" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                <span style=@(data.Ganador == TipoJugador.Visitante ? "color: green" : "color: red")>@data.JugadorVisitante.NickName</span>
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="PartidoDto" Property="JugadorVisitante.EquipoSeleccionado" Title="Equipo" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
 
         <RadzenDataGridColumn TItem="PartidoDto" Property="Ganador" Title="Ganador" Frozen="true" Width="80px" TextAlign="TextAlign.Center"/>
@@ -39,4 +55,5 @@
     {
         return OnPartidoSelected.InvokeAsync(partido);
     }
+
 }

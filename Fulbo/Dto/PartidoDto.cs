@@ -19,7 +19,7 @@ public class PartidoDto
         Goles = partido.Goles.Select(x => new GolesDto(x)).ToList();
     }
 
-    public string Ganador
+    public string SummaryPartido
     {
         get
         {
@@ -28,6 +28,17 @@ public class PartidoDto
             var lov = golesLocal > golesVisitante ? "L" : "V";
 
             return $"{lov} {golesLocal}/{golesVisitante}";
+        }
+    }
+
+    public TipoJugador Ganador
+    {
+        get
+        {
+            var golesLocal = Goles.Where(x => x.TipoJugador == TipoJugador.Local).Count();
+            var golesVisitante = Goles.Where(x => x.TipoJugador == TipoJugador.Visitante).Count();
+
+            return golesLocal > golesVisitante ? TipoJugador.Local : TipoJugador.Visitante;
         }
     }
 
